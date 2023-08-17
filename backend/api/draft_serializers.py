@@ -154,7 +154,7 @@ class SubscribeSerializer(serializers.ModelSerializer):
         """ Проверка подписки. """
         return Subscribe.objects.filter(
             user=obj.user, author=obj.author).exists()
-    
+
     def get_recipes(self, obj):
         """ Получение рецептов автора. """
         request = self.context.get('request')

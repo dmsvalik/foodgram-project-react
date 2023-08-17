@@ -8,8 +8,8 @@ from rest_framework import serializers, validators
 from rest_framework.generics import get_object_or_404
 
 from core import constants
-from recipes.models import (Ingredient, IngredientInRecipe,
-                            RecipeList, Tag,)
+from recipes.models import (Ingredient, IngredientInRecipe, FavoriteRecipe,
+                            RecipeList, ShoppingCart, Tag,)
 from users.models import Subscribe
 
 
@@ -39,8 +39,14 @@ class UserSerializer(UserHandleSerializer):
     def get_is_subscribed(self, obj):
         """ Проверка подписки. """
         user = self.context.get('request').user
-        return not user.is_anonymous and obj.subscribing.filter(
-            user=user).exists()
+        return not user.is_anonymous or Subscribe.objects.filter(
+            user=user, author=obj.author).exists()
+        # Использовал код ниже по замечаниям Ревью с использованием
+        # related_name. Рушится все (не показывает рецепты если залогинен,
+        # избранное). Общая ошибка 500
+
+        # return not user.is_anonymous or obj.author.subscribing.filter(
+        #     user=user).exists()
 
 
 class UserPasswordSerializer(serializers.Serializer):
@@ -135,7 +141,8 @@ class SubscribeSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({
                 'errors': 'Ошибка подписки! Нельзя подписаться на самого себя.'
             })
-        if user_id.subscribing.filter(author_id=author_id).exists():
+        if Subscribe.objects.filter(user=user_id,
+                                    author=author_id).exists():
             raise serializers.ValidationError({
                 'errors': 'Ошибка подписки! Нельзя подписаться повторно.'
             })
@@ -147,7 +154,7 @@ class SubscribeSerializer(serializers.ModelSerializer):
         """ Проверка подписки. """
         return Subscribe.objects.filter(
             user=obj.user, author=obj.author).exists()
-
+    
     def get_recipes(self, obj):
         """ Получение рецептов автора. """
         request = self.context.get('request')
@@ -160,7 +167,8 @@ class SubscribeSerializer(serializers.ModelSerializer):
 
     def get_recipes_count(self, obj):
         """ Подсчет рецептов автора. """
-        return RecipeList.objects.filter(author=obj.author).count()
+        return obj.author.recipes.count()
+        # return RecipeList.objects.filter(author=obj.author).count()
 
 
 class RecipeSerializer(serializers.ModelSerializer):
@@ -218,10 +226,6 @@ class RecipeSerializer(serializers.ModelSerializer):
         super().update(instance, validated_data)
         return instance
 
-    # Если применить условие ревью ("Нам не обязательно
-    # переписывать этот метод."), то у меня при создании
-    # рецепта выскакивает ошибка 500
-    # Я пытался переписать условия create - не получилось!
     def to_internal_value(self, data):
         ingredients = data.pop('ingredients')
         tags = data.pop('tags')
@@ -233,15 +237,20 @@ class RecipeSerializer(serializers.ModelSerializer):
     def get_is_favorited(self, obj):
         """ Проверка рецепта в списке избранного. """
         user = self.context.get('request').user
-        return not user.is_anonymous and obj.favorites.filter(
-            user=user).exists()
+        # if user.is_anonymous:
+        #     return False
+        # return FavoriteRecipe.objects.filter(recipe=obj,
+        #                                      user=user).exists()
+        return not user.is_anonymous or FavoriteRecipe.objects.filter(
+            recipe=obj, user=user).exists()
 
     def get_is_in_shopping_cart(self, obj):
         """ Проверка рецепта в корзине покупок. """
         user = self.context.get('request').user
         if not user or user.is_anonymous:
             return False
-        return obj.shopping_cart.filter(user=user).exists()
+        return ShoppingCart.objects.filter(recipe=obj,
+                                           user=user).exists()
 
     def validate(self, data):
         """ Валидация различных данных на уровне сериализатора. """

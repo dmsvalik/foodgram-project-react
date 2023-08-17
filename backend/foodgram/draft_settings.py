@@ -1,4 +1,9 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+from core import constants
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -69,6 +74,22 @@ DATABASES = {
     }
 }
 
+# Данные для размещение на удаленный сервер с использованием postgresql
+# Изначально для работа локально используем SQLite3
+# DATABASES = {
+#     'default': {
+#         'ENGINE': os.getenv(
+#             'DB_ENGINE',
+#             default='django.db.backends.postgresql',
+#         ),
+#         'NAME': os.getenv('POSTGRES_DB', default='postgres'),
+#         'USER': os.getenv('POSTGRES_USER', default='postgres'),
+#         'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
+#         'HOST': os.getenv('DB_HOST', default='db'),
+#         'PORT': os.getenv('DB_PORT', default='5432'),
+#     }
+# }
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME':
@@ -127,7 +148,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS':
         'api.pagination.LimitPageNumberPagination',
-    'PAGE_SIZE': 6,
+    'PAGE_SIZE': constants.DEFAULT_PAGE_SIZE,
 }
 
 DJOSER = {

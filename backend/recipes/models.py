@@ -13,6 +13,7 @@ class Ingredient(models.Model):
     name = models.CharField(
         'Название ингредиента',
         max_length=200,
+        db_index=True,
     )
     measurement_unit = models.CharField(
         'Единица измерения ингредиента',
@@ -21,7 +22,7 @@ class Ingredient(models.Model):
 
     class Meta:
         ordering = ('name',)
-        verbose_name = 'Ингредиент'
+        verbose_name = 'ингредиент'
         verbose_name_plural = 'Ингредиенты'
 
     def __str__(self):
@@ -47,8 +48,8 @@ class Tag(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Тэг'
-        verbose_name_plural = 'Тэги'
+        verbose_name = 'тэг'
+        verbose_name_plural = 'тэги'
         ordering = ('-id',)
 
     def __str__(self):
@@ -61,12 +62,12 @@ class RecipeList(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='recipes',
-        verbose_name='Автор рецепта',
+        verbose_name='автор рецепта',
         help_text='Выберите автора рецепта'
     )
     name = models.CharField(
         max_length=255,
-        verbose_name='Название рецепта',
+        verbose_name='название рецепта',
         help_text='Введите название рецепта',
     )
     image = models.ImageField(
@@ -76,23 +77,23 @@ class RecipeList(models.Model):
         null=True,
     )
     text = models.TextField(
-        verbose_name='Описание рецепта',
+        verbose_name='описание рецепта',
         help_text='Введите описания рецепта'
     )
     ingredients = models.ManyToManyField(
         Ingredient,
         through='IngredientInRecipe',
         related_name='recipe',
-        verbose_name='Ингредиенты в рецепте',
+        verbose_name='ингредиенты в рецепте',
         help_text='Выберите ингредиенты рецепта'
     )
     tags = models.ManyToManyField(
         Tag,
-        verbose_name='Тег рецепта',
+        verbose_name='тег рецепта',
         help_text='Выберите тег рецепта'
     )
-    cooking_time = models.PositiveIntegerField(
-        verbose_name='Время приготовления в минутах',
+    cooking_time = models.PositiveSmallIntegerField(
+        verbose_name='время приготовления в минутах',
         validators=[
             validators.MinValueValidator(
                 constants.MIN_COOKING_TIME,
@@ -108,12 +109,12 @@ class RecipeList(models.Model):
     )
     pub_date = models.DateTimeField(
         auto_now_add=True,
-        verbose_name='Дата создания рецепта',
+        verbose_name='дата создания рецепта',
     )
 
     class Meta:
-        verbose_name = 'Рецепт'
-        verbose_name_plural = 'Рецепты'
+        verbose_name = 'рецепт'
+        verbose_name_plural = 'рецепты'
         ordering = ('-pub_date',)
 
     def __str__(self):
@@ -125,17 +126,17 @@ class IngredientInRecipe(models.Model):
     recipe = models.ForeignKey(
         RecipeList,
         on_delete=models.CASCADE,
-        verbose_name='Рецепт',
+        verbose_name='рецепт',
         related_name='recipe_ingredients',
     )
     ingredient = models.ForeignKey(
         'Ingredient',
         null=True,
         on_delete=models.CASCADE,
-        verbose_name='Ингредиент',
+        verbose_name='ингредиент',
         related_name='ingredient',
     )
-    amount = models.PositiveIntegerField(
+    amount = models.PositiveSmallIntegerField(
         default=constants.MIN_INGREDIENT_AMOUNT,
         validators=(
             validators.MinValueValidator(
@@ -148,8 +149,8 @@ class IngredientInRecipe(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Количество ингредиентов'
-        verbose_name_plural = 'Количество ингредиента'
+        verbose_name = 'количество ингредиентов'
+        verbose_name_plural = 'количество ингредиента'
         ordering = ('-id',)
         constraints = (
             models.UniqueConstraint(
@@ -169,7 +170,7 @@ class RecipeUserList(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        verbose_name='Пользователь',
+        verbose_name='пользователь',
     )
 
     class Meta:
@@ -181,8 +182,8 @@ class FavoriteRecipe(RecipeUserList):
     """ Модель Избранное. """
     class Meta(RecipeUserList.Meta):
         default_related_name = 'favorites'
-        verbose_name = 'Избранное'
-        verbose_name_plural = 'Избранные'
+        verbose_name = 'избранное'
+        verbose_name_plural = 'избранные'
         ordering = ('-id',)
         constraints = (
             models.UniqueConstraint(
@@ -200,8 +201,8 @@ class ShoppingCart(RecipeUserList):
     """ Модель Карзина покупок. """
     class Meta(RecipeUserList.Meta):
         default_related_name = 'shopping_cart'
-        verbose_name = 'Покупка'
-        verbose_name_plural = 'Покупки'
+        verbose_name = 'покупка'
+        verbose_name_plural = 'покупки'
         constraints = (
             models.UniqueConstraint(
                 fields=['recipe', 'user'],

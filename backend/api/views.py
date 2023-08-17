@@ -124,12 +124,16 @@ class RecipesViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user,)
 
+    # По ревью. В случае если я избавляюсь от self перестает работать
+    # Ошибка 500 Internal Server Error
     def new_favorite_or_cart(self, model, user, pk):
         recipe = get_object_or_404(RecipeList, id=pk)
         model.objects.create(user=user, recipe=recipe)
         serializer = FavoriteOrSubscribeSerializer(recipe)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    # По ревью. В случае если я избавляюсь от self перестает работать
+    # Ошибка 500 Internal Server Error
     def remove_favorite_or_cart(self, model, user, pk):
         obj = model.objects.filter(user=user, recipe__id=pk)
         if obj.exists():

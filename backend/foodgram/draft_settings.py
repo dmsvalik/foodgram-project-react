@@ -146,7 +146,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS':
         'api.pagination.LimitPageNumberPagination',
-    'PAGE_SIZE': constants.DEFAULT_PAGE_SIZE,
+    'PAGE_SIZE': 6,
 }
 
 DJOSER = {

@@ -160,7 +160,7 @@ class SubscribeSerializer(serializers.ModelSerializer):
 
     def get_recipes_count(self, obj):
         """ Подсчет рецептов автора. """
-        return RecipeList.objects.filter(author=obj.author).count()
+        return obj.author.recipes.count()
 
 
 class RecipeSerializer(serializers.ModelSerializer):

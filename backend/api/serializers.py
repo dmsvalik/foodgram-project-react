@@ -218,10 +218,6 @@ class RecipeSerializer(serializers.ModelSerializer):
         super().update(instance, validated_data)
         return instance
 
-    # Если применить условие ревью ("Нам не обязательно
-    # переписывать этот метод."), то у меня при создании
-    # рецепта выскакивает ошибка 500
-    # Я пытался переписать условия create - не получилось!
     def to_internal_value(self, data):
         ingredients = data.pop('ingredients')
         tags = data.pop('tags')

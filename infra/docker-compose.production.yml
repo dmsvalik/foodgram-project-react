@@ -11,7 +11,7 @@ services:
     env_file: .env
 
   backend:
-    build: ../backend/.
+    image: dmsvalik/foodgram_backend/.
     container_name: foodgram_backend
     restart: on-failure
     volumes:
@@ -25,13 +25,15 @@ services:
     env_file: .env
 
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    image: dmsvalik/foodgram_frontend/.
+    container_name: foodgram_frontend
     volumes:
       - ../frontend/:/app/result_build/
+
   nginx:
     image: nginx:1.19.3
+    container_name: foodgram_gateway
+    restart: always
     ports:
       - "80:80"
     volumes:

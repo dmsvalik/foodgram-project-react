@@ -10,8 +10,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', default='django-insecure-whatever')
 DEBUG = env('DEBUG')
 
 # Прошу на это не смотреть. Готовлюсь к размещению проекта на серваке))
-# ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', default='127.0.0.1').split(', ')
-ALLOWED_HOSTS = ('127.0.0.1', 'localhost', 'backend')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', default='127.0.0.1').split(', ')
+# ALLOWED_HOSTS = ('dmtest.ddns.net', '127.0.0.1', 'localhost', 'backend')
 
 
 AUTH_USER_MODEL = 'users.User'
@@ -66,8 +66,15 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': os.getenv(
+            'DB_ENGINE',
+            default='django.db.backends.postgresql',
+        ),
+        'NAME': os.getenv('POSTGRES_DB', default='postgres'),
+        'USER': os.getenv('POSTGRES_USER', default='postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
+        'HOST': os.getenv('DB_HOST', default='db'),
+        'PORT': os.getenv('DB_PORT', default='5432'),
     }
 }
 

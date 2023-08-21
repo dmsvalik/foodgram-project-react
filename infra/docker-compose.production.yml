@@ -11,7 +11,7 @@ services:
     env_file: .env
 
   backend:
-    image: dmsvalik/foodgram_backend/.
+    image: dmsvalik/foodgram_backend
     container_name: foodgram_backend
     restart: on-failure
     volumes:
@@ -25,7 +25,7 @@ services:
     env_file: .env
 
   frontend:
-    image: dmsvalik/foodgram_frontend/.
+    image: dmsvalik/foodgram_frontend
     container_name: foodgram_frontend
     volumes:
       - ../frontend/:/app/result_build/

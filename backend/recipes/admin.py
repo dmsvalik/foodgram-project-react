@@ -1,9 +1,7 @@
 from django.contrib import admin
 
-from recipes.models import (Ingredient, IngredientInRecipe,
-                            FavoriteRecipe, RecipeList,
-                            ShoppingCart, Tag)
-
+from recipes.models import (FavoriteRecipe, Ingredient, IngredientInRecipe,
+                            RecipeList, ShoppingCart, Tag)
 
 EMPTY_STRING: str = '-пусто-'
 

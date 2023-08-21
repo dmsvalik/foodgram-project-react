@@ -1,9 +1,7 @@
+from core import constants
 from django.contrib.auth import get_user_model
 from django.core import validators
 from django.db import models
-
-from core import constants
-
 
 User = get_user_model()
 

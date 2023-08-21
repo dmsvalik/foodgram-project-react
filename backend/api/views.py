@@ -1,7 +1,10 @@
+from core import constants
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet as DjoserUserViewSet
+from recipes.models import (FavoriteRecipe, Ingredient, RecipeList,
+                            ShoppingCart, Tag)
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
@@ -9,20 +12,15 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ReadOnlyModelViewSet
+from users.models import Subscribe
 
 from api.filters import IngredientFilter, RecipeFilter
 from api.pagination import LimitPageNumberPagination
 from api.permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
-from api.serializers import (IngredientSerializer,
-                             FavoriteOrSubscribeSerializer,
-                             RecipeSerializer, SubscribeSerializer,
-                             TagSerializer, UserSerializer,
-                             UserPasswordSerializer)
-from core import constants
-from recipes.models import (FavoriteRecipe, Ingredient, RecipeList,
-                            ShoppingCart, Tag)
-from users.models import Subscribe
-
+from api.serializers import (FavoriteOrSubscribeSerializer,
+                             IngredientSerializer, RecipeSerializer,
+                             SubscribeSerializer, TagSerializer,
+                             UserPasswordSerializer, UserSerializer)
 
 User = get_user_model()
 

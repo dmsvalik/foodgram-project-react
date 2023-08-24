@@ -11,8 +11,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', default='django-insecure-whatever')
 DEBUG = env('DEBUG')
 
 # Прошу на это не смотреть. Готовлюсь к размещению проекта на серваке))
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', default='127.0.0.1').split(', ')
-# ALLOWED_HOSTS = ('dmtest.ddns.net', '127.0.0.1', 'localhost', 'backend')
+# ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', default='127.0.0.1').split(', ')
+ALLOWED_HOSTS = ('dmtest.ddns.net', '127.0.0.1', 'localhost', 'backend')
 
 
 AUTH_USER_MODEL = 'users.User'

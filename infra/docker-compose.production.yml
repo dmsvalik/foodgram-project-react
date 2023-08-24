@@ -29,10 +29,8 @@ services:
 
   nginx:
     image: nginx:1.19.3
-    container_name: foodgram_gateway
-    restart: always
     ports:
-      - "80:80"
+      - "8000:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ../frontend/build:/usr/share/nginx/html/
@@ -41,6 +39,7 @@ services:
       - media_foodgram:/var/html/media/
     depends_on:
       - frontend
+      
 
 volumes:
   db_foodgram:

@@ -20,6 +20,8 @@ services:
       - media_foodgram:/app/media/
     depends_on:
       - db
+    links:
+      - db:db
     env_file: .env
 
   frontend:
@@ -40,7 +42,7 @@ services:
       - static_foodgram:/var/html/static/
       - media_foodgram:/var/html/media/
     depends_on:
-      - frontend
+      - backend
 
 volumes:
   db_foodgram:

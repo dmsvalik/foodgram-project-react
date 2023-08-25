@@ -18,12 +18,14 @@ services:
       - media_foodgram:/app/media/
     depends_on:
       - db
+    links:
+      - db:db
     env_file: .env
 
   frontend:
     image: dmsvalik/foodgram_frontend
     volumes:
-      - ../frontend/:/app/result_build/
+      - ./frontend/:/app/result_build/
     depends_on:
      - db
 
@@ -38,8 +40,8 @@ services:
       - static_foodgram:/var/html/static/
       - media_foodgram:/var/html/media/
     depends_on:
-      - frontend
-      
+      # - frontend
+      - backend
 
 volumes:
   db_foodgram:

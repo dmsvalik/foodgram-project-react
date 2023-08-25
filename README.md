@@ -57,11 +57,11 @@ docker-compose up -d
 Внутри контейнера backend выполнить миграции, создать суперпользователя (для входа 
 в админку), собрать статику и загрузить ингредиенты и таг в базу данных:
 ```
-docker-compose exec backend python manage.py migrate
-docker-compose exec backend python manage.py createsuperuser
-docker-compose exec backend python manage.py collectstatic --no-input
-docker-compose exec backend python manage.py load_tags
-docker-compose exec backend python manage.py load_data
+docker compose exec backend python manage.py migrate
+docker compose exec backend python manage.py createsuperuser
+docker compose exec backend python manage.py collectstatic --no-input
+docker compose exec backend python manage.py load_tags
+docker compose exec backend python manage.py load_data
 ```
 После этого проект должен стать доступен по адресу http://localhost:8000/.
 

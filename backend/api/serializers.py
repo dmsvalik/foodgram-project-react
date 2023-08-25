@@ -255,11 +255,11 @@ class RecipeSerializer(serializers.ModelSerializer):
                     'Дважды один тот же ингредиент в рецепт поместить нельзя.'
                 )
             added_ingredients.append(ingredient['id'])
-        cooking_time = float(data.get('cooking_time'))
+        cooking_time = data.get('cooking_time')
         if cooking_time < constants.MIN_COOKING_TIME:
             errors.append(
                 f'Время приготовления должно быть не меньше '
-                f'{constants.constants.MIN_COOKING_TIME} минут(ы).'
+                f'{constants.MIN_COOKING_TIME} минут(ы).'
             )
         if cooking_time > constants.MAX_COOKING_TIME:
             errors.append(

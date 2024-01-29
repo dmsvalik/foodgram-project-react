@@ -1,4 +1,3 @@
-# praktikum_new_diplom
 # Сайт Foodgram "Продуктовый помощник"
 
 ![foogram_react workflow](https://github.com/dmsvalik/foodgram-project-react/actions/workflows/main.yml/badge.svg)
@@ -114,11 +113,3 @@ PostgreSQL, Docker, nginx, gunicorn, flake8, GitHub Actions (CI/CD).
 ### Авторы проекта
 
 [Мельник Вячеслав](https://github.com/dmsvalik)<br>
-[Яндекс.Практикум](https://practicum.yandex.ru/)
-
-### Посмотреть готовый проект
-
-Проект доступен по адресу: https://dmtest.ddns.net/<br>
-Данные администратора:<br>
-email: jurcenter@yandex.ru<br>
-password: admin
